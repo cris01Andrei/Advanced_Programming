@@ -1,0 +1,147 @@
+import java.util.*;
+
+interface Profile {
+    String myID();
+    String myName();
+}
+
+class Person implements Profile, Comparable<Person> {
+    String ID, name;
+
+    Map<Person, String> selection = new HashMap<>();
+    Map<Company, String> select = new HashMap<>();
+
+    Person(String ID, String name) {
+        this.ID = ID;
+        this.name = name;
+    }
+
+    public void Knowing(Person p, String context) {
+        selection.put(p, context);
+    }
+
+    public void Having(Company c, String function) {
+        select.put(c, function);
+    }
+
+    @Override
+    public String toString() {
+        return "Persoana " + myName();
+    }
+
+    @Override
+    public int compareTo(Person temp) {
+        return name.compareTo(temp.name);
+    }
+
+    @Override
+    public String myID() {
+        return this.ID;
+    }
+
+    @Override
+    public String myName() {
+        return this.name;
+    }
+}
+
+class Company implements Profile, Comparable<Company> {
+    String ID, name;
+
+    Company(String ID, String name) {
+        this.ID = ID;
+        this.name = name;
+    }
+
+    @Override
+    public int compareTo(Company temp) {
+        return name.compareTo(temp.name);
+    }
+
+    @Override
+    public String myID() {
+        return this.ID;
+    }
+
+    @Override
+    public String myName() {
+        return this.name;
+    }
+
+    @Override
+    public String toString() {
+        return "Companie " + myName();
+    }
+}
+
+class Programmer extends Person {
+    String language;
+
+    Programmer(String ID, String name, String language) {
+        super(ID, name);
+        this.language = language;
+    }
+
+    @Override
+    public String toString() {
+        return "Programator " + this.name;
+    }
+}
+
+class Designer extends Person {
+    String type;
+
+    Designer(String ID, String name, String type) {
+        super(ID, name);
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Designer " + this.name;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Company google = new Company("C1", "Google");
+        Company apple = new Company("C2", "Apple");
+        Company microsoft = new Company("C3", "Microsoft");
+
+        Programmer ion = new Programmer("P1", "Ion", "Java");
+        Designer ana = new Designer("P2", "Ana", "Web");
+        Programmer claudiu = new Programmer("P3", "Claudiu", "C++");
+        Designer ioana = new Designer("P4", "Ioana", "Flask");
+
+        ion.Having(google, "Java Developer");
+        ana.Having(google, "UX Designer");
+        ion.Knowing(ana, "Colegi de echipă");
+        ioana.Having(google, "CEO");
+        claudiu.Having(microsoft, "C++ Developer");
+
+        List<Person> angajati = new ArrayList<>(Arrays.asList(ion, ana, claudiu, ioana));
+        Collections.sort(angajati);
+
+        List<Company> companii = new ArrayList<>(Arrays.asList(google, apple, microsoft));
+        Collections.sort(companii);
+
+        System.out.println("******** Oameni Sortați Alfabetic ********");
+        for (Person p : angajati) {
+            System.out.println(p);
+        }
+
+        System.out.println("\n******** Companii Sortate Alfabetic ********");
+        for (Company c : companii) {
+            System.out.println(c);
+        }
+
+        System.out.println("\nUnde lucrează Ion? " + ion.select);
+        System.out.println("Pe cine cunoaște Ion? " + ion.selection);
+        System.out.println("\nUnde lucrează Ana? " + ana.select);
+        System.out.println("Pe cine cunoaște Ana? " + ana.selection);
+        System.out.println("\nUnde lucrează Claudiu? " + claudiu.select);
+        System.out.println("Pe cine cunoaște Claudiu? " + claudiu.selection);
+        System.out.println("\nUnde lucrează Ioana? " + ioana.select);
+        System.out.println("Pe cine cunoaște Ioana? " + ioana.selection);
+    }
+}

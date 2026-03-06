@@ -1,0 +1,173 @@
+import java.util.*;
+
+enum RoadType {
+    HIGHWAY, EXPRESS, COUNTRY
+}
+
+abstract class Location {
+    protected String name;
+
+    public Location(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()){
+            return false;
+        }
+        return Objects.equals(name, ((Location) o).name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}
+
+class City extends Location {
+    private int population;
+    public City(String name, int population) {
+        super(name);
+        this.population = population;
+    }
+}
+
+class Airport extends Location {
+    private int terminals;
+    public Airport(String name, int terminals) {
+        super(name);
+        this.terminals = terminals;
+    }
+}
+
+class GasStation extends Location {
+    private double gasPrice;
+    public GasStation(String name, double gasPrice) {
+        super(name);
+        this.gasPrice = gasPrice;
+    }
+}
+
+class Road {
+    private RoadType type;
+    private double length;
+    private Location u, v;
+
+    public Road(RoadType type, double length, Location u, Location v) {
+        this.type = type;
+        this.length = length;
+        this.u = u;
+        this.v = v;
+    }
+
+    public Location getU() {
+        return u;
+    }
+    public Location getV() {
+        return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()){
+            return false;
+        }
+        Road road = (Road) o;
+        return (u.equals(road.u) && v.equals(road.v)) || (u.equals(road.v) && v.equals(road.u));
+    }
+
+    @Override
+    public int hashCode() {
+        return u.hashCode() + v.hashCode();
+    }
+}
+
+class Problem {
+    private Set<Location> locations = new HashSet<>();
+    private Set<Road> roads = new HashSet<>();
+
+    public void addLocation(Location location) {
+        locations.add(location);
+    }
+    public void addRoad(Road road) {
+        roads.add(road);
+    }
+
+    public boolean isValid() {
+        if (locations.isEmpty()){
+            return false;
+        }
+        for (Road road : roads) {
+            if (!locations.contains(road.getU()) || !locations.contains(road.getV())){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isReachable(Location start, Location destination) {
+        if (!locations.contains(start) || !locations.contains(destination)){
+            return false;
+        }
+
+        Queue<Location> queue = new LinkedList<>();
+        Set<Location> visited = new HashSet<>();
+
+        queue.add(start);
+        visited.add(start);
+
+        while (!queue.isEmpty()) {
+            Location current = queue.poll();
+            if (current.equals(destination)){
+                return true;
+            }
+
+            for (Road road : roads) {
+                Location next = null;
+                if (road.getU().equals(current)){
+                    next = road.getV();
+                }
+                else if (road.getV().equals(current)){
+                    next = road.getU();
+                }
+
+                if (next != null && visited.add(next)) {
+                    queue.add(next);
+                }
+            }
+        }
+        return false;
+    }
+}
+
+public class Roads {
+    public static void main(String[] args) {
+        Problem problem = new Problem();
+
+        City iasi = new City("Iasi", 300000);
+        City bacau = new City("Bacau", 140000);
+        Airport otopeni = new Airport("Otopeni", 2);
+
+        problem.addLocation(iasi);
+        problem.addLocation(bacau);
+        problem.addLocation(otopeni);
+
+        problem.addRoad(new Road(RoadType.HIGHWAY, 130.0, iasi, bacau));
+        problem.addRoad(new Road(RoadType.EXPRESS, 280.0, bacau, otopeni));
+
+        System.out.println("Este problema valida? " + problem.isValid());
+        System.out.println("Exista drum Iasi -> Otopeni? " + problem.isReachable(iasi, otopeni));
+    }
+}

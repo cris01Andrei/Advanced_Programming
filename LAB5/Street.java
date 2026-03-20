@@ -22,4 +22,4 @@ public class Street {
     public String toString() {
         return name + " (" + length + "m) leagă " + u.getName() + " de " + v.getName();
     }
-}
+} 

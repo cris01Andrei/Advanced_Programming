@@ -51,4 +51,4 @@ public class Main {
                         s.getU().equals(target.getV()) || s.getV().equals(target.getV()))
                 .count();
     }
-}
+} 

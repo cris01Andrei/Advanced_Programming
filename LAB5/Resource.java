@@ -42,4 +42,4 @@ public class Resource {
     public String toString() {
         return id + " | " + title + " | " + year + " | " + author;
     }
-}
+} 

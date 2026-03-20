@@ -25,4 +25,4 @@ public class City {
     public String getName() { return name; }
     public List<Intersection> getIntersections() { return intersections; }
     public List<Street> getStreets() { return streets; }
-}
+} 

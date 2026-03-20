@@ -81,4 +81,4 @@ public class KSpanningTreeAlgorithm {
             System.out.println("Soluția " + (i + 1) + ": Cost total = " + finalSolutions.get(i));
         }
     }
-}
+} 

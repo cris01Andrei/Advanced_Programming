@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Raport Filme</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        table { border-collapse: collapse; width: 60%; margin: 20px auto; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        h1 { text-align: center; color: #333; }
+    </style>
+</head>
+<body>
+<h1>Raport Filme</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Titlu</th>
+        <th>Scor</th>
+        <th>Durata (min)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="m : ${movies}">
+        <td th:text="${m.id}">1</td>
+        <td th:text="${m.title}">Titlu Film</td>
+        <td th:text="${m.score}">0.0</td>
+        <td th:text="${m.duration}">0</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
